@@ -3,32 +3,32 @@
 namespace LibRESTApiTodoIst.Model
 {
     /// <summary>
-    /// Vencimiento de una tarea de Todoist.
+    /// Expiration of a Todoist task.
     /// </summary>
     public class DueModel
     {
         /// <summary>
-        /// Fecha definida de manera humana en formato arbitrario.
+        /// Date defined in a human way in arbitrary format.
         /// </summary>
         [JsonProperty("string")]
         public string String { get; set; }
 
         /// <summary>
-        /// Fecha en formato YYYY-MM-DD de la zona horaria del usuario.
+        /// Date in YYYY-MM-DD format of the user's time zone.
         /// </summary>
         [JsonProperty("date")]
         public string Date { get; set; }
 
         /// <summary>
-        /// Fecha y hora en formato RFC3339 de la zona UTC.
-        /// Sólo se devuelve si se ha establecido una hora de vencimiento (p.ej. si no se trata de una tarea que ocupa todo el día).
+        /// Date and time in RFC3339 format of the UTC area.
+        /// It is only returned if an expiration time has been set (eg if it is not a task that takes up the entire day).
         /// </summary>
         [JsonProperty("datetime")]
         public string Datetime { get; set; }
 
         /// <summary>
-        /// Zona horaria del usuario, ya sea en formato compatible con tzdata ("Europe/Berlin"), o una cadena especificando Este o diferencia UTC como “UTC±HH:MM” (p.ej. “UTC-01:00”).
-        /// Sólo se devuelve si se ha establecido una hora de vencimiento.
+        /// User's time zone, either in tzdata compatible format ("Europe / Berlin"), or a string specifying East or UTC difference as "UTC ± HH: MM" (eg "UTC-01: 00").
+        /// It is only returned if an expiration time has been set.
         /// </summary>
         [JsonProperty("timezone")]
         public string Timezone { get; set; }

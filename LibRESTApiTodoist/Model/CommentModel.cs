@@ -4,42 +4,42 @@ using System;
 namespace LibRESTApiTodoIst.Model
 {
     /// <summary>
-    /// Comentario de Todoist.
+    /// Comment from Todoist.
     /// </summary>
     public class CommentModel
     {
         /// <summary>
-        /// Identificador de comentario.
+        /// Comment identifier.
         /// </summary>
         [JsonProperty("id")]
         public long ID { get; set; }
 
         /// <summary>
-        /// Identificador de tarea (para los comentarios de tarea).
+        /// Task identifier (for task comments).
         /// </summary>
         [JsonProperty("task_id")]
         public long? TaskID { get; set; }
 
         /// <summary>
-        /// Identificador de proyecto (para los comentarios de proyecto).
+        /// Project identifier (for project comments).
         /// </summary>
         [JsonProperty("project_id")]
         public long? ProjectID { get; set; }
 
         /// <summary>
-        /// Fecha y hora de inserción del comentario, en formato RFC3339 en UTC.
+        /// Date and time of insertion of the comment, in RFC3339 format in UTC.
         /// </summary>
         [JsonProperty("posted")]
         public string Posted { get; set; }
 
         /// <summary>
-        /// Contenido del comentario.
+        /// Content of the comment.
         /// </summary>
         [JsonProperty("content")]
         public string Content { get; set; }
 
         /// <summary>
-        /// Fichero adjunto.
+        /// Attached document.
         /// </summary>
         [JsonProperty("attachment")]
         public AttachmentModel Attachment { get; set; }

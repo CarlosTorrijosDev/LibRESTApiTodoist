@@ -3,24 +3,24 @@
 namespace LibRESTApiTodoIst.Model
 {
     /// <summary>
-    /// Etiqueta de Todoist.
+    /// Todoist label.
     /// </summary>
     public class LabelModel
     {
         /// <summary>
-        /// Identificador de la etiqueta.
+        /// Label identifier.
         /// </summary>
         [JsonProperty("id")]
         public long ID { get; set; }
 
         /// <summary>
-        /// Nombre de la etiqueta.
+        /// Name of the label.
         /// </summary>
         [JsonProperty("name")]
         public string Name { get; set; }
 
         /// <summary>
-        /// Número usado por los clientes para ordenar la lista de etiquetas.
+        /// Number used by customers to order the list of labels.
         /// </summary>
         [JsonProperty("order")]
         public int Order { get; set; }

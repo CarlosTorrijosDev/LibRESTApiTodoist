@@ -4,12 +4,12 @@ using Newtonsoft.Json;
 namespace LibRESTApiTodoIst.Model
 {
     /// <summary>
-    /// Tarea de Todoist.
+    /// Todoist task.
     /// </summary>
     public class TaskModel
     {
         /// <summary>
-        /// Tipo de prioridad.
+        /// Priority type.
         /// </summary>
         public enum PriorityType
         {
@@ -20,67 +20,67 @@ namespace LibRESTApiTodoIst.Model
         }
 
         /// <summary>
-        /// Identificador de la tarea.
+        /// Task identifier.
         /// </summary>
         [JsonProperty("id")]
         public long ID { get; set; }
 
         /// <summary>
-        /// Identificador del proyecto.
+        /// Project identifier.
         /// </summary>
         [JsonProperty("project_id")]
         public long ProjectID { get; set; }
 
         /// <summary>
-        /// Contenido de la tarea.
+        /// Content of the task.
         /// </summary>
         [JsonProperty("content")]
         public string Content { get; set; }
 
         /// <summary>
-        /// Indicador de tarea completada.
+        /// Task indicator completed.
         /// </summary>
         [JsonProperty("completed")]
         public bool Completed { get; set; }
 
         /// <summary>
-        /// Lista de etiquetas asociadas a la tarea.
+        /// List of labels associated with the task.
         /// </summary>
         [JsonProperty("label_ids")]
         public List<long> LabelIDs { get; set; }
 
         /// <summary>
-        /// Posición en el proyecto.
+        /// Position in the project.
         /// </summary>
         [JsonProperty("order")]
         public int Order { get; set; }
 
         /// <summary>
-        /// Nivel de indentación de la tarea de 1 a 5.
+        /// Indentation level of the task from 1 to 5.
         /// </summary>
         [JsonProperty("indent")]
         public int Indent { get; set; }
 
         /// <summary>
-        /// Prioridad de la tarea de 1 (normal, valor por defecto) a 4 (urgente).
+        /// Priority of the task from 1 (normal, default value) to 4 (urgent).
         /// </summary>
         [JsonProperty("priority")]
         public PriorityType Priority { get; set; }
 
         /// <summary>
-        /// Vencimiento de la tarea.
+        /// Expiration of the task.
         /// </summary>
         [JsonProperty("due")]
         public DueModel Due { get; set; }
 
         /// <summary>
-        /// URL para acceder a la tarea en la interfaz web de Todoist.
+        /// URL to access the task in the Todoist web interface.
         /// </summary>
         [JsonProperty("url")]
         public string Url { get; set; }
 
         /// <summary>
-        /// Número de comentarios de la tarea.
+        /// Number of comments of the task.
         /// </summary>
         [JsonProperty("comment_count")]
         public int CommentCount { get; set; }
