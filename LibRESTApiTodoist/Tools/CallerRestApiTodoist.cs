@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace LibRESTApiTodoIst.Tools
 {
     /// <summary>
-    /// Clase que llama a los métodos de la api REST de Todoist.
+    /// Class calling methods of the Todoist API REST.
     /// </summary>
     public class CallerRestApiTodoist
     {
@@ -21,12 +21,12 @@ namespace LibRESTApiTodoIst.Tools
 
 
         /// <summary>
-        /// Constructor de la clase.
+        /// Class constructor.
         /// </summary>
-        /// <param name="URLBase">URL base.</param>
-        /// <param name="authorizationToken">Token de autorización.</param>
-        /// <param name="retryCount">Número de repeticiones máximo que realizarán las peticiones, ante un error transitorio.</param>
-        /// <param name="delayInSecondsForRetry">Retraso en segundos a aplicar cuando se obtiene un error transitorio.</param>
+        /// <param name="URLBase">Base URL.</param>
+        /// <param name="authorizationToken">Authorization token.</param>
+        /// <param name="retryCount">Number of repetitions maximum that the requests will make, before a transitory error.</param>
+        /// <param name="delayInSecondsForRetry">Delay in seconds to apply when a transient error is obtained.</param>
         public CallerRestApiTodoist(string URLBase, string authorizationToken, int retryCount = 3, double delayInSecondsForRetry = 5)
         {
             if (string.IsNullOrEmpty(URLBase) || string.IsNullOrWhiteSpace(URLBase))
@@ -56,13 +56,13 @@ namespace LibRESTApiTodoIst.Tools
         }
 
         /// <summary>
-        /// Llama al metodo de la Api REST.
+        /// Call the Api REST method.
         /// </summary>
-        /// <param name="method">Tipo de método REST que se usa (GET, POST, PUT, DELETE, etc).</param>
-        /// <param name="methodName">Nombre del método.</param>
-        /// <param name="requestId">Identificador de la petición.</param>
-        /// <param name="bodyParameters">Parámetros del body.</param>
-        /// <returns>Resultado de la llamada.</returns>
+        /// <param name="method">Type of REST method used (GET, POST, PUT, DELETE, etc).</param>
+        /// <param name="methodName">Name of the method.</param>
+        /// <param name="requestId">Identifier of the request.</param>
+        /// <param name="bodyParameters">Parameters of the body.</param>
+        /// <returns>Result of the call.</returns>
         public async Task<IRestResponse> CallRestMethodAsync(Method method, string methodName, string requestId, Dictionary<string, string> queryParameters, dynamic bodyParameters)
         {
             int currentRetry = 0;
@@ -79,17 +79,17 @@ namespace LibRESTApiTodoIst.Tools
                     request = new RestRequest(methodName, method);
                     request.RequestFormat = DataFormat.Json;
 
-                    // Añade las cabeceras iniciales
+                    // Add the initial headers
                     request.AddHeader("Cache-Control", "no-cache");
                     request.AddHeader("Authorization", $"Bearer {AuthorizationToken}");
 
-                    // Añade el identificador de la petición (para identificar la transacción en algunos casos)
+                    // Add the identifier of the request (to identify the transaction in some cases)
                     if (!string.IsNullOrEmpty(requestId))
                     {
                         request.AddHeader("X-Request-Id", requestId);
                     }
 
-                    // Añade los parámetros de query
+                    // Add the query parameters
                     if (queryParameters != null)
                     {
                         foreach (var queryParameter in queryParameters)
@@ -98,7 +98,7 @@ namespace LibRESTApiTodoIst.Tools
                         }
                     }
 
-                    // Añade los parámetros del body
+                    // Add the parameters of the body
                     if (bodyParameters != null)
                     {
                         request.AddHeader("Content-type", "application/json");
@@ -124,14 +124,11 @@ namespace LibRESTApiTodoIst.Tools
 
                     currentRetry++;
 
-                    // Comprueba si la excepción lanzada es una excepcion pasajera
-                    // basado en la lógica de la estrategia de detección de errores.
-                    // Determina si reintentar la operación, así como cuánto esperar,
-                    // basado en la estrategia de reintento.
+                    // Check if the exception thrown is a temporary exception based on the logic of the error detection strategy.
+                    // Determines whether to retry the operation, as well as how much to expect, based on the retry strategy.
                     if (currentRetry >= this.RetryCount || !IsTransient(ex))
                     {
-                        // Si no se trata de un error pasajero o si no debería reintentar,
-                        // se relanza la excepción
+                        // If it is not a trasient error or you should not retry, the exception is relaunched
                         throw;
                     }
                 }
@@ -141,9 +138,7 @@ namespace LibRESTApiTodoIst.Tools
                     LogRequest(Client, request, response, stopWatch.ElapsedMilliseconds);
                 }
 
-                // Espera para reintentar la operación.
-                // Considere calcular un retraso exponencial aquí y
-                // usando una estrategia que mejor se adapte a la operación y error.
+                // Wait to retry the operation.
                 Trace.TraceWarning($"Task delay: {RetryDelay.TotalSeconds} seconds");
                 await Task.Delay(RetryDelay);
 
@@ -151,17 +146,16 @@ namespace LibRESTApiTodoIst.Tools
         }
 
         /// <summary>
-        /// Comprueba si la excepción es transitoria.
+        /// Check if the exception is transient.
         /// </summary>
-        /// <param name="ex">Excepción.</param>
-        /// <returns>Indica si la excepción es transitoria.</returns>
+        /// <param name="ex">Exception.</param>
+        /// <returns>Indicates if the exception is transient.</returns>
         private bool IsTransient(Exception ex)
         {
             var webException = ex as WebException;
             if (webException != null)
             {
-                // Si la excepción web contiene uno de los siguientes valores de estado
-                // debería ser transitoria
+                // If the web exception contains one of the following state values ​​it should be transient
                 return new[]
                 {
                     WebExceptionStatus.ConnectionClosed,
@@ -175,15 +169,15 @@ namespace LibRESTApiTodoIst.Tools
         }
 
         /// <summary>
-        /// Logea la petición realizada a la Api REST.
+        /// Log the request made to the Api REST.
         /// </summary>
-        /// <param name="client">Cliente de Api REST.</param>
-        /// <param name="request">Petición realizada.</param>
-        /// <param name="response">respuesta obtenida.</param>
-        /// <param name="durationMs">Duración en ms de la llamada.</param>
+        /// <param name="client">Api REST client.</param>
+        /// <param name="request">Request.</param>
+        /// <param name="response">Response.</param>
+        /// <param name="durationMs">Duration in ms of the call.</param>
         private void LogRequest(RestClient client, IRestRequest request, IRestResponse response, long durationMs)
         {
-            // Establece la petición a logear
+            // Set the request to log
             var requestToLog = new
             {
                 resource = request.Resource,
@@ -197,7 +191,7 @@ namespace LibRESTApiTodoIst.Tools
                 uri = client.BuildUri(request),
             };
 
-            // Establece la respuesta a logear
+            // Sets the response to log
             object content = null;
             if (response.StatusCode == HttpStatusCode.OK &&
                 response.ContentType == "application/json")
@@ -218,7 +212,7 @@ namespace LibRESTApiTodoIst.Tools
                 errorMessage = response.ErrorMessage,
             };
 
-            // Tracea la petición, respuesta y tiempo de ejecución
+            // Trace the request, response and execution time
             Trace.TraceInformation(Environment.NewLine +
                                    $">>> Request completed in { durationMs } ms" + Environment.NewLine +
                                    $">>> Request: { JsonConvert.SerializeObject(requestToLog) }" + Environment.NewLine +
