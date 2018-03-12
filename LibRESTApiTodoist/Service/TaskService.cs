@@ -9,7 +9,7 @@ using RestSharp;
 namespace LibRESTApiTodoIst.Service
 {
     /// <summary>
-    /// Servicio de <see cref="TaskModel"/>
+    /// Service of <see cref="TaskModel"/>
     /// </summary>
     public class TaskService
     {
@@ -17,9 +17,9 @@ namespace LibRESTApiTodoIst.Service
 
 
         /// <summary>
-        /// Constructor de la clase.
+        /// Class constructor.
         /// </summary>
-        /// <param name="callerRestApiTodoist">Caller de la api REST de Todoist.</param>
+        /// <param name="callerRestApiTodoist">Caller of the Todoi REST api.</param>
         public TaskService(CallerRestApiTodoist callerRestApiTodoist)
         {
             _callerRestApiTodoist = callerRestApiTodoist;
@@ -27,9 +27,9 @@ namespace LibRESTApiTodoIst.Service
 
 
         /// <summary>
-        /// Obtiene todas las tareas.
+        /// Get all the tasks.
         /// </summary>
-        /// <returns>Lista de tareas</returns>
+        /// <returns>Task list</returns>
         public async Task<List<TaskModel>> GetAllTasksAsync()
         {
             IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.GET, "tasks", null, null, null);
@@ -44,10 +44,10 @@ namespace LibRESTApiTodoIst.Service
         }
 
         /// <summary>
-        /// Crea una tarea (En la bandeja de entrada y con prioridad normal).
+        /// Create a task (In the inbox and with normal priority).
         /// </summary>
-        /// <param name="content">Contenido de la tarea.</param>
-        /// <returns>Tarea creada.</returns>
+        /// <param name="content">Content of the task.</param>
+        /// <returns>Task created.</returns>
         public async Task<TaskModel> CreateTaskAsync(string content)
         {
             var parameters = new { content };
@@ -56,16 +56,16 @@ namespace LibRESTApiTodoIst.Service
         }
 
         /// <summary>
-        /// Crea una tarea (Indicando la fecha de vencimiento de manera "natural").
+        /// Create a task (Indicating the due date in a "natural" way).
         /// </summary>
-        /// <param name="content">Contenido de la tarea.</param>
-        /// <param name="projectID">Identificador del proyecto.</param>
-        /// <param name="order">Orden.</param>
-        /// <param name="labelIDs">Identificadores de etiquetas.</param>
-        /// <param name="priority">Prioridad.</param>
-        /// <param name="dueString">Vencimiento especificado de manera "natural".</param>
-        /// <param name="dueLanguage">Lenguaje del vencimiento.</param>
-        /// <returns>Tarea creada.</returns>
+        /// <param name="content">Content of the task.</param>
+        /// <param name="projectID">Project identifier.</param>
+        /// <param name="order">Order.</param>
+        /// <param name="labelIDs">Label identifiers.</param>
+        /// <param name="priority">Priority.</param>
+        /// <param name="dueString">Expiration specified in a "natural" manner.</param>
+        /// <param name="dueLanguage">Expiry language.</param>
+        /// <returns>Task created.</returns>
         public async Task<TaskModel> CreateTaskAsync(string content, long projectID, uint order, List<int> labelIDs, TaskModel.PriorityType priority, string dueString, string dueLanguage)
         {
             var parameters = new
@@ -83,15 +83,15 @@ namespace LibRESTApiTodoIst.Service
         }
 
         /// <summary>
-        /// Crea una tarea (Indicando la fecha de vencimiento como fecha sin hora).
+        /// Create a task (Indicating expiration date as date without time).
         /// </summary>
-        /// <param name="content">Contenido de la tarea.</param>
-        /// <param name="projectID">Identificador del proyecto.</param>
-        /// <param name="order">Orden.</param>
-        /// <param name="labelIDs">Identificadores de etiquetas.</param>
-        /// <param name="priority">Prioridad.</param>
-        /// <param name="dueDate">Vencimiento especificado como fecha.</param>
-        /// <returns>Tarea creada.</returns>
+        /// <param name="content">Content of the task.</param>
+        /// <param name="projectID">Project identifier.</param>
+        /// <param name="order">Order.</param>
+        /// <param name="labelIDs">Label identifiers.</param>
+        /// <param name="priority">Priority.</param>
+        /// <param name="dueDate">Expiration specified as date.</param>
+        /// <returns>Task created.</returns>
         public async Task<TaskModel> CreateTaskAsync(string content, long projectID, uint order, List<int> labelIDs, TaskModel.PriorityType priority, DateTime dueDate)
         {
             if (dueDate.Hour == 0 &&
@@ -127,10 +127,10 @@ namespace LibRESTApiTodoIst.Service
         }
 
         /// <summary>
-        /// Crea la tarea.
+        /// Create the task.
         /// </summary>
-        /// <param name="parameters">Parámetros con sus valores.</param>
-        /// <returns>Tarea creada.</returns>
+        /// <param name="parameters">Parameters with their values.</param>
+        /// <returns>Task created.</returns>
         private async Task<TaskModel> CreateTaskAsync(dynamic parameters)
         {
             IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.POST, "tasks", Guid.NewGuid().ToString(), null, parameters);
@@ -145,10 +145,10 @@ namespace LibRESTApiTodoIst.Service
         }
 
         /// <summary>
-        /// Obtiene la tarea.
+        /// Get the task.
         /// </summary>
-        /// <param name="taskID">Identificador de la tarea.</param>
-        /// <returns>Tarea.</returns>
+        /// <param name="taskID">Task identifier.</param>
+        /// <returns>Task.</returns>
         public async Task<TaskModel> GetTaskAsync(long taskID)
         {
             IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.GET, $"tasks/{ taskID }", null, null, null);
@@ -163,11 +163,11 @@ namespace LibRESTApiTodoIst.Service
         }
 
         /// <summary>
-        /// Actualiza la tarea indicada.
+        /// Update the indicated task.
         /// </summary>
-        /// <param name="taskID">Identificador de la tarea.</param>
-        /// <param name="content">Contenido de la tarea.</param>
-        /// <returns>Indica si se ha realizado la modificación.</returns>
+        /// <param name="taskID">Task identifier.</param>
+        /// <param name="content">Content of the task.</param>
+        /// <returns>Indicates if the modification has been made.</returns>
         public async Task<bool> UpdateTaskAsync(long taskID, string content)
         {
             var parameters = new { content };
@@ -176,16 +176,16 @@ namespace LibRESTApiTodoIst.Service
         }
 
         /// <summary>
-        /// Actualiza la tarea indicada.
+        /// Update the indicated task.
         /// </summary>
-        /// <param name="taskID">Identificador de la tarea.</param>
-        /// <param name="content">Contenido de la tarea.</param>
-        /// <param name="projectID">Identificador del proyecto.</param>
-        /// <param name="labelIDs">Identificadores de etiquetas.</param>
-        /// <param name="priority">Prioridad.</param>
-        /// <param name="dueString">Vencimiento especificado de manera "natural".</param>
-        /// <param name="dueLanguage">Lenguaje del vencimiento.</param>
-        /// <returns>Indica si se ha realizado la modificación.</returns>
+        /// <param name="taskID">Task identifier.</param>
+        /// <param name="content">Content of the task.</param>
+        /// <param name="projectID">Project identifier.</param>
+        /// <param name="labelIDs">Label identifiers.</param>
+        /// <param name="priority">Priority.</param>
+        /// <param name="dueString">Expiration specified in a "natural" manner.</param>
+        /// <param name="dueLanguage">Expiry language.</param>
+        /// <returns>Indicates if the modification has been made.</returns>
         public async Task<bool> UpdateTaskAsync(long taskID, string content, long projectID, List<int> labelIDs, TaskModel.PriorityType priority, string dueString, string dueLanguage)
         {
             var parameters = new
@@ -202,15 +202,15 @@ namespace LibRESTApiTodoIst.Service
         }
 
         /// <summary>
-        /// Actualiza la tarea indicada.
+        /// Update the indicated task.
         /// </summary>
-        /// <param name="taskID">Identificador de la tarea.</param>
-        /// <param name="content">Contenido de la tarea.</param>
-        /// <param name="projectID">Identificador del proyecto.</param>
-        /// <param name="labelIDs">Identificadores de etiquetas.</param>
-        /// <param name="priority">Prioridad.</param>
-        /// <param name="dueDate">Vencimiento especificado como fecha.</param>
-        /// <returns>Indica si se ha realizado la modificación.</returns>
+        /// <param name="taskID">Task identifier.</param>
+        /// <param name="content">Content of the task.</param>
+        /// <param name="projectID">Project identifier.</param>
+        /// <param name="labelIDs">Label identifiers.</param>
+        /// <param name="priority">Priority.</param>
+        /// <param name="dueDate">Expiration specified as date.</param>
+        /// <returns>Indicates if the modification has been made.</returns>
         public async Task<bool> UpdateTaskAsync(long taskID, string content, long projectID, List<int> labelIDs, TaskModel.PriorityType priority, DateTime dueDate)
         {
             if (dueDate.Hour == 0 &&
@@ -244,10 +244,10 @@ namespace LibRESTApiTodoIst.Service
         }
 
         /// <summary>
-        /// Actualiza la tarea.
+        /// Update the task.
         /// </summary>
-        /// <param name="parameters">Parámetros con sus valores.</param>
-        /// <returns>Tarea creada.</returns>
+        /// <param name="parameters">Parameters with their values.</param>
+        /// <returns>Task created.</returns>
         private async Task<bool> UpdateTaskAsync(long taskID, dynamic parameters)
         {
             IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.POST, $"tasks/{ taskID }", Guid.NewGuid().ToString(), null, parameters);
@@ -256,9 +256,9 @@ namespace LibRESTApiTodoIst.Service
         }
 
         /// <summary>
-        /// Cierra la tarea.
+        /// Close the task.
         /// </summary>
-        /// <returns>Indica si se ha cerrado la tarea.</returns>
+        /// <returns>Indicates if the task has been closed.</returns>
         public async Task<bool> CloseTaskAsync(long taskID)
         {
             IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.POST, $"tasks/{ taskID }/close", null, null, null);
@@ -267,10 +267,10 @@ namespace LibRESTApiTodoIst.Service
         }
 
         /// <summary>
-        /// Reabre una tarea cerrada.
+        /// Reopen a closed task.
         /// </summary>
-        /// <param name="taskID">Identificador de la tarea.</param>
-        /// <returns>Indica si se ha reabierto la tarea.</returns>
+        /// <param name="taskID">Task identifier.</param>
+        /// <returns>Indicates if the task has been reopened.</returns>
         public async Task<bool> ReopenTaskAsync(long taskID)
         {
             IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.POST, $"tasks/{ taskID }/reopen", null, null, null);
@@ -279,10 +279,10 @@ namespace LibRESTApiTodoIst.Service
         }
 
         /// <summary>
-        /// Elimina la tarea indicada.
+        /// Remove the indicated task.
         /// </summary>
-        /// <param name="taskID">Identificador de la tarea.</param>
-        /// <returns>Indica si se ha realizado la eliminación.</returns>
+        /// <param name="taskID">Task identifier.</param>
+        /// <returns>Indicates if the deletion has been made.</returns>
         public async Task<bool> DeleteTaskAsync(long taskID)
         {
             IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.DELETE, $"tasks/{ taskID }", null, null, null);

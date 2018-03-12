@@ -9,7 +9,7 @@ using RestSharp;
 namespace LibRESTApiTodoIst.Service
 {
     /// <summary>
-    /// Servicio de <see cref="LabelModel"/>
+    /// Service of <see cref="LabelModel"/>
     /// </summary>
     public class LabelService
     {
@@ -17,9 +17,9 @@ namespace LibRESTApiTodoIst.Service
 
 
         /// <summary>
-        /// Constructor de la clase.
+        /// Class constructor.
         /// </summary>
-        /// <param name="callerRestApiTodoist">Caller de la api REST de Todoist.</param>
+        /// <param name="callerRestApiTodoist">Caller of the Todoi REST api.</param>
         public LabelService(CallerRestApiTodoist callerRestApiTodoist)
         {
             _callerRestApiTodoist = callerRestApiTodoist;
@@ -27,9 +27,9 @@ namespace LibRESTApiTodoIst.Service
 
 
         /// <summary>
-        /// Obtiene todos las etiquetas.
+        /// Get all tags.
         /// </summary>
-        /// <returns>Lista de etiquetas.</returns>
+        /// <returns>List of labels.</returns>
         public async Task<List<LabelModel>> GetAllLabelsAsync()
         {
             IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.GET, "labels", null, null, null);
@@ -44,10 +44,10 @@ namespace LibRESTApiTodoIst.Service
         }
 
         /// <summary>
-        /// Crea una etiqueta.
+        /// Create a label.
         /// </summary>
-        /// <param name="labelName">Nombre de la etiqueta.</param>
-        /// <returns>Etiqueta creada.</returns>
+        /// <param name="labelName">Name of the label.</param>
+        /// <returns>Created label.</returns>
         public async Task<LabelModel> CreateLabelAsync(string labelName)
         {
             var parameters = new { name = labelName };
@@ -64,10 +64,10 @@ namespace LibRESTApiTodoIst.Service
         }
 
         /// <summary>
-        /// Obtiene la etiqueta indicada.
+        /// Get the indicated label.
         /// </summary>
-        /// <param name="labelID">Identificador de etiqueta.</param>
-        /// <returns>Etiqueta.</returns>
+        /// <param name="labelID">Tag identifier.</param>
+        /// <returns>Label.</returns>
         public async Task<LabelModel> GetLabelAsync(long labelID)
         {
             IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.GET, $"labels/{ labelID }", null, null, null);
@@ -82,11 +82,11 @@ namespace LibRESTApiTodoIst.Service
         }
 
         /// <summary>
-        /// Actualiza la etiqueta indicada.
+        /// Update the indicated label.
         /// </summary>
-        /// <param name="labelID">Identificador de la etiqueta.</param>
-        /// <param name="labelName">Nombre de la etiqueta.</param>
-        /// <returns>Indica si se ha realizado la modificación.</returns>
+        /// <param name="labelID">Label identifier.</param>
+        /// <param name="labelName">Name of the label.</param>
+        /// <returns>Indicates if the modification has been made.</returns>
         public async Task<bool> UpdateLabelAsync(long labelID, string labelName)
         {
             var parameters = new { name = labelName };
@@ -97,10 +97,10 @@ namespace LibRESTApiTodoIst.Service
         }
 
         /// <summary>
-        /// Elimina la etiqueta indicada.
+        /// Remove the indicated label.
         /// </summary>
-        /// <param name="labelID">Identificador de la etiqueta.</param>
-        /// <returns>Indica si se ha realizado la eliminación.</returns>
+        /// <param name="labelID">Label identifier.</param>
+        /// <returns>Indicates if the deletion has been made.</returns>
         public async Task<bool> DeleteLabelAsync(long labelID)
         {
             IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.DELETE, $"labels/{ labelID }", null, null, null);

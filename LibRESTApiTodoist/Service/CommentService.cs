@@ -9,7 +9,7 @@ using RestSharp;
 namespace LibRESTApiTodoIst.Service
 {
     /// <summary>
-    /// Servicio de <see cref="CommentModel"/>
+    /// Service of <see cref="CommentModel"/>
     /// </summary>
     public class CommentService
     {
@@ -17,9 +17,9 @@ namespace LibRESTApiTodoIst.Service
 
 
         /// <summary>
-        /// Constructor de la clase.
+        /// Class constructor.
         /// </summary>
-        /// <param name="callerRestApiTodoist">Caller de la api REST de Todoist.</param>
+        /// <param name="callerRestApiTodoist">Caller of the Todoist REST api.</param>
         public CommentService(CallerRestApiTodoist callerRestApiTodoist)
         {
             _callerRestApiTodoist = callerRestApiTodoist;
@@ -28,10 +28,10 @@ namespace LibRESTApiTodoIst.Service
 
 
         /// <summary>
-        /// Obtiene todos los comentarios de una tarea.
+        /// Get all comments on a task.
         /// </summary>
-        /// <param name="taskID">Identificador de tarea.</param>
-        /// <returns>Lista de comentarios.</returns>
+        /// <param name="taskID">Task identifier.</param>
+        /// <returns>List of comments.</returns>
         public async Task<List<CommentModel>> GetCommentsByTaskAsync(long taskID)
         {
             Dictionary<string, string> queryParameters = new Dictionary<string, string>();
@@ -41,10 +41,10 @@ namespace LibRESTApiTodoIst.Service
         }
 
         /// <summary>
-        /// Obtiene todos los comentarios de un proyecto.
+        /// Get all comments on a project.
         /// </summary>
-        /// <param name="projectID">Identificador de proyecto.</param>
-        /// <returns>Lista de comentarios.</returns>
+        /// <param name="projectID">Project identifier.</param>
+        /// <returns>List of comments.</returns>
         public async Task<List<CommentModel>> GetCommentsByProjectAsync(long projectID)
         {
             Dictionary<string, string> queryParameters = new Dictionary<string, string>();
@@ -54,10 +54,10 @@ namespace LibRESTApiTodoIst.Service
         }
 
         /// <summary>
-        /// Obtiene todos los comentarios mediante los parámetros de consulta especificados.
+        /// Get all comments using the specified query parameters.
         /// </summary>
-        /// <param name="queryParameters">Parámetros de consulta.</param>
-        /// <returns>Lista de comentarios.</returns>
+        /// <param name="queryParameters">Query parameters.</param>
+        /// <returns>List of comments.</returns>
         private async Task<List<CommentModel>> GetCommentsByParametersAsync(Dictionary<string, string> queryParameters)
         {
             IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.GET, "comments", null, queryParameters, null);
@@ -72,46 +72,46 @@ namespace LibRESTApiTodoIst.Service
         }
 
         /// <summary>
-        /// Crea un comentario para una tarea.
+        /// Create a comment for a task.
         /// </summary>
-        /// <param name="commentContent">Contenido del comentario.</param>
-        /// <param name="taskID">Identificador de la tarea.</param>
-        /// <returns>Comentario creado.</returns>
+        /// <param name="commentContent">Content of the comment.</param>
+        /// <param name="taskID">Task identifier.</param>
+        /// <returns>Comment created.</returns>
         public async Task<CommentModel> CreateCommentForTaskAsync(string commentContent, long taskID)
         {
             var parameters = new
             {
                 task_id = taskID,
                 content = commentContent
-                // TODO: Faltaría incluir attachment
+                // TODO: It would be necessary to include an attachment
             };
 
             return await CreateCommentByParameters(parameters);
         }
 
         /// <summary>
-        /// Crea un comentario para un proyecto.
+        /// Create a comment for a project.
         /// </summary>
-        /// <param name="commentContent">Contenido del comentario.</param>
-        /// <param name="projectID">Identificador del proyecto.</param>
-        /// <returns>Comentario creado.</returns>
+        /// <param name="commentContent">Content of the comment.</param>
+        /// <param name="projectID">Project identifier.</param>
+        /// <returns>Comment created.</returns>
         public async Task<CommentModel> CreateCommentForProjectAsync(string commentContent, long projectID)
         {
             var parameters = new
             {
                 project_id = projectID,
                 content = commentContent
-                // TODO: Faltaría incluir attachment
+                // TODO: It would be necessary to include an attachment
             };
 
             return await CreateCommentByParameters(parameters);
         }
 
         /// <summary>
-        /// Crea un comentario mediante los parámetros especificados.
+        /// Create a comment using the specified parameters.
         /// </summary>
-        /// <param name="parameters">Parámetros.</param>
-        /// <returns>Comentario creado.</returns>
+        /// <param name="parameters">Parameters.</param>
+        /// <returns>Comment created.</returns>
         private async Task<CommentModel> CreateCommentByParameters(dynamic parameters)
         {
             IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.POST, "comments", Guid.NewGuid().ToString(), null, parameters);
@@ -126,9 +126,9 @@ namespace LibRESTApiTodoIst.Service
         }
 
         /// <summary>
-        /// Obtiene el comentario indicado.
+        /// Get the indicated comment.
         /// </summary>
-        /// <returns>Comentario.</returns>
+        /// <returns>Commentary.</returns>
         public async Task<CommentModel> GetCommentAsync(long commentID)
         {
             IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.GET, $"comments/{ commentID }", null, null, null);
@@ -143,11 +143,11 @@ namespace LibRESTApiTodoIst.Service
         }
 
         /// <summary>
-        /// Actualiza el comentario indicado.
+        /// Update the indicated comment.
         /// </summary>
         /// <param name="commentID">Identificador del comentario.</param>
-        /// <param name="commentContent">Contenido del comentario.</param>
-        /// <returns>Indica si se ha realizado la modificación.</returns>
+        /// <param name="commentContent">Content of the comment.</param>
+        /// <returns>Indicates if the modification has been made.</returns>
         public async Task<bool> UpdateCommentAsync(long commentID, string commentContent)
         {
             var parameters = new { content = commentContent };
@@ -158,10 +158,10 @@ namespace LibRESTApiTodoIst.Service
         }
 
         /// <summary>
-        /// Elimina el comentario indicado.
+        /// Remove the indicated comment.
         /// </summary>
-        /// <param name="projectID">Identificador del comentario.</param>
-        /// <returns>Indica si se ha realizado la eliminación.</returns>
+        /// <param name="projectID">Comment identifier.</param>
+        /// <returns>Indicates if the deletion has been made.</returns>
         public async Task<bool> DeleteCommentAsync(long commentID)
         {
             IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.DELETE, $"comments/{ commentID }", null, null, null);

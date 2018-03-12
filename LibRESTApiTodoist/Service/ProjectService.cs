@@ -9,7 +9,7 @@ using RestSharp;
 namespace LibRESTApiTodoIst.Service
 {
     /// <summary>
-    /// Servicio de <see cref="ProjectModel"/>
+    /// Service of <see cref="ProjectModel"/>
     /// </summary>
     public class ProjectService
     {
@@ -17,9 +17,9 @@ namespace LibRESTApiTodoIst.Service
 
 
         /// <summary>
-        /// Constructor de la clase.
+        /// Class constructor.
         /// </summary>
-        /// <param name="callerRestApiTodoist">Caller de la api REST de Todoist.</param>
+        /// <param name="callerRestApiTodoist">Caller of the Todoi REST api.</param>
         public ProjectService(CallerRestApiTodoist callerRestApiTodoist)
         {
             _callerRestApiTodoist = callerRestApiTodoist;
@@ -28,9 +28,9 @@ namespace LibRESTApiTodoIst.Service
 
 
         /// <summary>
-        /// Obtiene todos los proyectos.
+        /// Get all projects.
         /// </summary>
-        /// <returns>Lista de proyectos.</returns>
+        /// <returns>Project list.</returns>
         public async Task<List<ProjectModel>> GetAllProjectsAsync()
         {
             IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.GET, "projects", null, null, null);
@@ -45,10 +45,10 @@ namespace LibRESTApiTodoIst.Service
         }
 
         /// <summary>
-        /// Crea un proyecto.
+        /// Create a project.
         /// </summary>
-        /// <param name="projectName">Nombre del proyecto.</param>
-        /// <returns>Proyecto creado.</returns>
+        /// <param name="projectName">Project's name.</param>
+        /// <returns>Project created.</returns>
         public async Task<ProjectModel> CreateProjectAsync(string projectName)
         {
             var parameters = new { name = projectName };
@@ -65,10 +65,10 @@ namespace LibRESTApiTodoIst.Service
         }
 
         /// <summary>
-        /// Obtiene el proyecto indicado.
+        /// Get the indicated project.
         /// </summary>
-        /// <param name="projectID">Identificador de proyecto.</param>
-        /// <returns>Proyecto.</returns>
+        /// <param name="projectID">Project identifier.</param>
+        /// <returns>Project.</returns>
         public async Task<ProjectModel> GetProjectAsync(long projectID)
         {
             IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.GET, $"projects/{ projectID }", null, null, null);
@@ -83,11 +83,11 @@ namespace LibRESTApiTodoIst.Service
         }
 
         /// <summary>
-        /// Actualiza el proyecto indicado.
+        /// Update the indicated project.
         /// </summary>
-        /// <param name="projectID">Identificador del proyecto.</param>
-        /// <param name="projectName">Nombre del proyecto.</param>
-        /// <returns>Indica si se ha realizado la modificación.</returns>
+        /// <param name="projectID">Project identifier.</param>
+        /// <param name="projectName">Project's name.</param>
+        /// <returns>Indicates if the modification has been made.</returns>
         public async Task<bool> UpdateProjectAsync(long projectID, string projectName)
         {
             var parameters = new { name = projectName };
@@ -98,10 +98,10 @@ namespace LibRESTApiTodoIst.Service
         }
 
         /// <summary>
-        /// Elimina el proyecto indicado.
+        /// Remove the indicated project.
         /// </summary>
-        /// <param name="projectID">Identificador del proyecto.</param>
-        /// <returns>Indica si se ha realizado la eliminación.</returns>
+        /// <param name="projectID">Project identifier.</param>
+        /// <returns>Indicates if the deletion has been made.</returns>
         public async Task<bool> DeleteProjectAsync(long projectID)
         {
             IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.DELETE, $"projects/{ projectID }", null, null, null);
