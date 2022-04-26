@@ -32,7 +32,7 @@ namespace LibRESTApiTodoIst.Service
         /// <returns>Task list</returns>
         public async Task<List<TaskModel>> GetAllTasksAsync()
         {
-            IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.GET, "tasks", null, null, null);
+            RestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.Get, "tasks", null, null, null);
 
             if (result.StatusCode == System.Net.HttpStatusCode.OK &&
                 result.ContentType == "application/json")
@@ -133,7 +133,7 @@ namespace LibRESTApiTodoIst.Service
         /// <returns>Task created.</returns>
         private async Task<TaskModel> CreateTaskAsync(dynamic parameters)
         {
-            IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.POST, "tasks", Guid.NewGuid().ToString(), null, parameters);
+            RestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.Post, "tasks", Guid.NewGuid().ToString(), null, parameters);
 
             if (result.StatusCode == System.Net.HttpStatusCode.OK &&
                 result.ContentType == "application/json")
@@ -151,7 +151,7 @@ namespace LibRESTApiTodoIst.Service
         /// <returns>Task.</returns>
         public async Task<TaskModel> GetTaskAsync(long taskID)
         {
-            IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.GET, $"tasks/{ taskID }", null, null, null);
+            RestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.Get, $"tasks/{ taskID }", null, null, null);
 
             if (result.StatusCode == System.Net.HttpStatusCode.OK &&
                 result.ContentType == "application/json")
@@ -250,7 +250,7 @@ namespace LibRESTApiTodoIst.Service
         /// <returns>Task created.</returns>
         private async Task<bool> UpdateTaskAsync(long taskID, dynamic parameters)
         {
-            IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.POST, $"tasks/{ taskID }", Guid.NewGuid().ToString(), null, parameters);
+            RestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.Post, $"tasks/{ taskID }", Guid.NewGuid().ToString(), null, parameters);
 
             return result.StatusCode == System.Net.HttpStatusCode.NoContent;
         }
@@ -261,7 +261,7 @@ namespace LibRESTApiTodoIst.Service
         /// <returns>Indicates if the task has been closed.</returns>
         public async Task<bool> CloseTaskAsync(long taskID)
         {
-            IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.POST, $"tasks/{ taskID }/close", null, null, null);
+            RestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.Post, $"tasks/{ taskID }/close", null, null, null);
 
             return result.StatusCode == System.Net.HttpStatusCode.NoContent;
         }
@@ -273,7 +273,7 @@ namespace LibRESTApiTodoIst.Service
         /// <returns>Indicates if the task has been reopened.</returns>
         public async Task<bool> ReopenTaskAsync(long taskID)
         {
-            IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.POST, $"tasks/{ taskID }/reopen", null, null, null);
+            RestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.Post, $"tasks/{ taskID }/reopen", null, null, null);
 
             return result.StatusCode == System.Net.HttpStatusCode.NoContent;
         }
@@ -285,7 +285,7 @@ namespace LibRESTApiTodoIst.Service
         /// <returns>Indicates if the deletion has been made.</returns>
         public async Task<bool> DeleteTaskAsync(long taskID)
         {
-            IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.DELETE, $"tasks/{ taskID }", null, null, null);
+            RestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.Delete, $"tasks/{ taskID }", null, null, null);
 
             return result.StatusCode == System.Net.HttpStatusCode.NoContent;
         }

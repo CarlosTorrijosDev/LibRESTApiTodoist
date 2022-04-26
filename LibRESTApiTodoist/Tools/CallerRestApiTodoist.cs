@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using LibRESTApiTodoIst.Service;
+using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -63,12 +64,12 @@ namespace LibRESTApiTodoIst.Tools
         /// <param name="requestId">Identifier of the request.</param>
         /// <param name="bodyParameters">Parameters of the body.</param>
         /// <returns>Result of the call.</returns>
-        public async Task<IRestResponse> CallRestMethodAsync(Method method, string methodName, string requestId, Dictionary<string, string> queryParameters, dynamic bodyParameters)
+        public async Task<RestResponse> CallRestMethodAsync(Method method, string methodName, string requestId, Dictionary<string, string> queryParameters, BaseJson bodyParameters)
         {
             int currentRetry = 0;
             var stopWatch = new Stopwatch();
             RestRequest request = null;
-            IRestResponse response = null;
+            RestResponse response = null;
 
             do
             {
@@ -105,7 +106,7 @@ namespace LibRESTApiTodoIst.Tools
                         request.AddJsonBody(bodyParameters);
                     }
 
-                    response = await Client.ExecuteTaskAsync(request);
+                    response = await Client.ExecuteAsync(request);
 
                     if (response.ErrorException != null)
                     {
@@ -175,7 +176,7 @@ namespace LibRESTApiTodoIst.Tools
         /// <param name="request">Request.</param>
         /// <param name="response">Response.</param>
         /// <param name="durationMs">Duration in ms of the call.</param>
-        private void LogRequest(RestClient client, IRestRequest request, IRestResponse response, long durationMs)
+        private void LogRequest(RestClient client, RestRequest request, RestResponse response, long durationMs)
         {
             // Set the request to log
             var requestToLog = new

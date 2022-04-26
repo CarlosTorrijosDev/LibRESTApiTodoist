@@ -32,7 +32,7 @@ namespace LibRESTApiTodoIst.Service
         /// <returns>List of labels.</returns>
         public async Task<List<LabelModel>> GetAllLabelsAsync()
         {
-            IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.GET, "labels", null, null, null);
+            RestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.Get, "labels", null, null, null);
 
             if (result.StatusCode == System.Net.HttpStatusCode.OK &&
                 result.ContentType == "application/json")
@@ -50,9 +50,9 @@ namespace LibRESTApiTodoIst.Service
         /// <returns>Created label.</returns>
         public async Task<LabelModel> CreateLabelAsync(string labelName)
         {
-            var parameters = new { name = labelName };
+            var parameters = new LabelJson(labelName);
 
-            IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.POST, "labels", Guid.NewGuid().ToString(), null, parameters);
+            RestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.Post, "labels", Guid.NewGuid().ToString(), null, parameters);
 
             if (result.StatusCode == System.Net.HttpStatusCode.OK &&
                 result.ContentType == "application/json")
@@ -70,7 +70,7 @@ namespace LibRESTApiTodoIst.Service
         /// <returns>Label.</returns>
         public async Task<LabelModel> GetLabelAsync(long labelID)
         {
-            IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.GET, $"labels/{ labelID }", null, null, null);
+            RestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.Get, $"labels/{ labelID }", null, null, null);
 
             if (result.StatusCode == System.Net.HttpStatusCode.OK &&
                 result.ContentType == "application/json")
@@ -89,9 +89,9 @@ namespace LibRESTApiTodoIst.Service
         /// <returns>Indicates if the modification has been made.</returns>
         public async Task<bool> UpdateLabelAsync(long labelID, string labelName)
         {
-            var parameters = new { name = labelName };
+            var parameters = new LabelJson(labelName);
 
-            IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.POST, $"labels/{ labelID }", Guid.NewGuid().ToString(), null, parameters);
+            RestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.Post, $"labels/{ labelID }", Guid.NewGuid().ToString(), null, parameters);
 
             return result.StatusCode == System.Net.HttpStatusCode.NoContent;
         }
@@ -103,7 +103,7 @@ namespace LibRESTApiTodoIst.Service
         /// <returns>Indicates if the deletion has been made.</returns>
         public async Task<bool> DeleteLabelAsync(long labelID)
         {
-            IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.DELETE, $"labels/{ labelID }", null, null, null);
+            RestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.Delete, $"labels/{ labelID }", null, null, null);
 
             return result.StatusCode == System.Net.HttpStatusCode.NoContent;
         }

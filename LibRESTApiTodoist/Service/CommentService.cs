@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LibRESTApiTodoist.Json;
 using LibRESTApiTodoIst.Model;
 using LibRESTApiTodoIst.Tools;
 using Newtonsoft.Json;
@@ -60,7 +61,7 @@ namespace LibRESTApiTodoIst.Service
         /// <returns>List of comments.</returns>
         private async Task<List<CommentModel>> GetCommentsByParametersAsync(Dictionary<string, string> queryParameters)
         {
-            IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.GET, "comments", null, queryParameters, null);
+            RestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.Get, "comments", null, queryParameters, null);
 
             if (result.StatusCode == System.Net.HttpStatusCode.OK &&
                 result.ContentType == "application/json")
@@ -79,12 +80,7 @@ namespace LibRESTApiTodoIst.Service
         /// <returns>Comment created.</returns>
         public async Task<CommentModel> CreateCommentForTaskAsync(string commentContent, long taskID)
         {
-            var parameters = new
-            {
-                task_id = taskID,
-                content = commentContent
-                // TODO: It would be necessary to include an attachment
-            };
+            var parameters = new CommentJsonForTask(taskID, commentContent);
 
             return await CreateCommentByParameters(parameters);
         }
@@ -97,12 +93,7 @@ namespace LibRESTApiTodoIst.Service
         /// <returns>Comment created.</returns>
         public async Task<CommentModel> CreateCommentForProjectAsync(string commentContent, long projectID)
         {
-            var parameters = new
-            {
-                project_id = projectID,
-                content = commentContent
-                // TODO: It would be necessary to include an attachment
-            };
+            var parameters = new CommentJsonForProject(projectID, commentContent);
 
             return await CreateCommentByParameters(parameters);
         }
@@ -112,9 +103,27 @@ namespace LibRESTApiTodoIst.Service
         /// </summary>
         /// <param name="parameters">Parameters.</param>
         /// <returns>Comment created.</returns>
-        private async Task<CommentModel> CreateCommentByParameters(dynamic parameters)
+        private async Task<CommentModel> CreateCommentByParameters(CommentJsonForTask parameters)
         {
-            IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.POST, "comments", Guid.NewGuid().ToString(), null, parameters);
+            RestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.Post, "comments", Guid.NewGuid().ToString(), null, parameters);
+
+            if (result.StatusCode == System.Net.HttpStatusCode.OK &&
+                result.ContentType == "application/json")
+            {
+                return JsonConvert.DeserializeObject<CommentModel>(result.Content);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Create a comment using the specified parameters.
+        /// </summary>
+        /// <param name="parameters">Parameters.</param>
+        /// <returns>Comment created.</returns>
+        private async Task<CommentModel> CreateCommentByParameters(CommentJsonForProject parameters)
+        {
+            RestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.Post, "comments", Guid.NewGuid().ToString(), null, parameters);
 
             if (result.StatusCode == System.Net.HttpStatusCode.OK &&
                 result.ContentType == "application/json")
@@ -131,7 +140,7 @@ namespace LibRESTApiTodoIst.Service
         /// <returns>Commentary.</returns>
         public async Task<CommentModel> GetCommentAsync(long commentID)
         {
-            IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.GET, $"comments/{ commentID }", null, null, null);
+            RestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.Get, $"comments/{ commentID }", null, null, null);
 
             if (result.StatusCode == System.Net.HttpStatusCode.OK &&
                 result.ContentType == "application/json")
@@ -150,9 +159,9 @@ namespace LibRESTApiTodoIst.Service
         /// <returns>Indicates if the modification has been made.</returns>
         public async Task<bool> UpdateCommentAsync(long commentID, string commentContent)
         {
-            var parameters = new { content = commentContent };
+            var parameters = new CommentJsonForUpdate(commentContent);
 
-            IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.POST, $"comments/{ commentID }", Guid.NewGuid().ToString(), null, parameters);
+            RestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.Post, $"comments/{ commentID }", Guid.NewGuid().ToString(), null, parameters);
 
             return result.StatusCode == System.Net.HttpStatusCode.NoContent;
         }
@@ -164,7 +173,7 @@ namespace LibRESTApiTodoIst.Service
         /// <returns>Indicates if the deletion has been made.</returns>
         public async Task<bool> DeleteCommentAsync(long commentID)
         {
-            IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.DELETE, $"comments/{ commentID }", null, null, null);
+            RestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.Delete, $"comments/{ commentID }", null, null, null);
 
             return result.StatusCode == System.Net.HttpStatusCode.NoContent;
         }

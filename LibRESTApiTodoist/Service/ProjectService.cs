@@ -33,7 +33,7 @@ namespace LibRESTApiTodoIst.Service
         /// <returns>Project list.</returns>
         public async Task<List<ProjectModel>> GetAllProjectsAsync()
         {
-            IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.GET, "projects", null, null, null);
+            RestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.Get, "projects", null, null, null);
 
             if (result.StatusCode == System.Net.HttpStatusCode.OK &&
                 result.ContentType == "application/json")
@@ -51,9 +51,9 @@ namespace LibRESTApiTodoIst.Service
         /// <returns>Project created.</returns>
         public async Task<ProjectModel> CreateProjectAsync(string projectName)
         {
-            var parameters = new { name = projectName };
+            var parameters = new ProjectJson(projectName);
 
-            IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.POST, "projects", Guid.NewGuid().ToString(), null, parameters);
+            RestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.Post, "projects", Guid.NewGuid().ToString(), null, parameters);
 
             if (result.StatusCode == System.Net.HttpStatusCode.OK &&
                 result.ContentType == "application/json")
@@ -71,7 +71,7 @@ namespace LibRESTApiTodoIst.Service
         /// <returns>Project.</returns>
         public async Task<ProjectModel> GetProjectAsync(long projectID)
         {
-            IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.GET, $"projects/{ projectID }", null, null, null);
+            RestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.Get, $"projects/{ projectID }", null, null, null);
 
             if (result.StatusCode == System.Net.HttpStatusCode.OK &&
                 result.ContentType == "application/json")
@@ -90,9 +90,9 @@ namespace LibRESTApiTodoIst.Service
         /// <returns>Indicates if the modification has been made.</returns>
         public async Task<bool> UpdateProjectAsync(long projectID, string projectName)
         {
-            var parameters = new { name = projectName };
+            var parameters = new ProjectJson(projectName);
 
-            IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.POST, $"projects/{ projectID }", Guid.NewGuid().ToString(), null, parameters);
+            RestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.Post, $"projects/{ projectID }", Guid.NewGuid().ToString(), null, parameters);
 
             return result.StatusCode == System.Net.HttpStatusCode.NoContent;
         }
@@ -104,7 +104,7 @@ namespace LibRESTApiTodoIst.Service
         /// <returns>Indicates if the deletion has been made.</returns>
         public async Task<bool> DeleteProjectAsync(long projectID)
         {
-            IRestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.DELETE, $"projects/{ projectID }", null, null, null);
+            RestResponse result = await _callerRestApiTodoist.CallRestMethodAsync(Method.Delete, $"projects/{ projectID }", null, null, null);
 
             return result.StatusCode == System.Net.HttpStatusCode.NoContent;
         }
